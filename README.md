@@ -9,6 +9,6 @@ The following R Markdowns contain information about the models and real-data exa
 
 1. [ODESurv: Logistic ODE hazard function](https://rpubs.com/FJRubio/logisODE)
 2. [ODESurv: Hazard-Response model](https://rpubs.com/FJRubio/HazardResponse)
-3. [Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations. LeukSurv data](https://rpubs.com/FJRubio/ODESurvLeukSurv)
+3. [Example 1. Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations. LeukSurv data](https://rpubs.com/FJRubio/ODESurvLeukSurv)
 
 See also the [ODESurv](https://github.com/andreschristen/ODESurv) repository for Python code.
