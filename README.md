@@ -12,3 +12,4 @@ The following R Markdowns contain information about the models and real-data exa
 3. [Example 1. Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations. LeukSurv data](https://rpubs.com/FJRubio/ODESurvLeukSurv)
 
 See also the [ODESurv](https://github.com/andreschristen/ODESurv) repository for Python code.
+See also [HazReg](https://github.com/FJRubio67/HazReg) for information about the `HazReg` R package.
