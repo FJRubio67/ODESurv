@@ -9,3 +9,5 @@ The following R Markdowns contain information about the models and real-data exa
 
 1. [ODESurv: Logistic ODE hazard function](https://rpubs.com/FJRubio/logisODE)
 2. 
+
+See also the [ODESurv](https://github.com/andreschristen/ODESurv) repository for Python code.
