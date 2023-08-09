@@ -8,6 +8,6 @@ This repository contains information about the project ODESurv, which concerns t
 The following R Markdowns contain information about the models and real-data examples used in the paper:
 
 1. [ODESurv: Logistic ODE hazard function](https://rpubs.com/FJRubio/logisODE)
-2. 
+2. [ODESurv: Hazard-Response model](https://rpubs.com/FJRubio/HazardResponse)
 
 See also the [ODESurv](https://github.com/andreschristen/ODESurv) repository for Python code.
