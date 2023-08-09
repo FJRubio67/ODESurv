@@ -1,4 +1,4 @@
-# Bayesian survival modelling via ordinary differential equations
+# Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations
 
 This repository contains information about the project ODESurv, which concerns the use of ordinary differential equations for survival modelling. In particular, this repository contains real data applications and R code for the dynamic survival models in:
 
