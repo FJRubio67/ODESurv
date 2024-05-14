@@ -1,4 +1,4 @@
-## ----message=FALSE----------------------------------------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------------------------------------------------------------
 #######################################################################################
 # Data preparation
 #######################################################################################
@@ -18,15 +18,16 @@ library(spBayes)
 library(bshazard)
 
 
-## ----include=FALSE----------------------------------------------------------------------------------------
+## ----include=FALSE------------------------------------------------------------------------------------------------------------------
 source("/Users/FJRubio/Dropbox/ODESurv/ODESurv/Codes/routines/routines.R")
+#source("C:/Users/Javier/Dropbox/ODESurv/Codes/routines/routines.R")
 
 
-## ----eval=FALSE-------------------------------------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------------------------------------------------------------
 ## source("routines.R")
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------
 # Data preparation
@@ -59,7 +60,7 @@ t_obs <- df$time[status]
 survtimes <- df$time
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #==================================================================================================
 # Maximum Likelihood Analysis
 #==================================================================================================
@@ -73,7 +74,7 @@ survtimes <- df$time
 initW <- c(0,0)
 
 # Optimisation step
-OPTW <- WMLE(initW, survtimes, status, hstr = "W", method = "nlminb", maxit = 10000)
+OPTW <- GHMLE(initW, survtimes, status, hstr = "baseline", dist = "Weibull", method = "nlminb", maxit = 10000)
 
 MLEW <- exp(OPTW$OPT$par)
 
@@ -93,7 +94,7 @@ AICW <- 2*OPTW$OPT$objective + 2*length(OPTW$OPT$par)
 BICW <- 2*OPTW$OPT$objective + length(OPTW$OPT$par)*log(length(survtimes))
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #==================================================================================================
 # Maximum Likelihood Analysis
 #==================================================================================================
@@ -106,7 +107,8 @@ BICW <- 2*OPTW$OPT$objective + length(OPTW$OPT$par)*log(length(survtimes))
 initPGW <- c(0,0,0)
 
 # Optimisation step
-OPTPGW <- PGWMLE(initPGW, survtimes, status, hstr = "PGW", method = "nlminb", maxit = 10000)
+OPTPGW <- GHMLE(initPGW, survtimes, status, hstr = "baseline", dist = "PGW", 
+                method = "nlminb", maxit = 10000)
 
 MLEPGW <- exp(OPTPGW$OPT$par)
 
@@ -127,7 +129,7 @@ BICPGW <- 2*OPTPGW$OPT$objective + length(OPTPGW$OPT$par)*log(length(survtimes))
 
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #==================================================================================================
 # MLE Analysis
 #==================================================================================================
@@ -155,7 +157,7 @@ AICHR <- 2*OPTHR$objective + 2*length(OPTHR$par)
 BICHR <- 2*OPTHR$objective + length(OPTHR$par)*log(length(survtimes))
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 # AIC comparison
 AICs <- c(AICW, AICPGW, AICHR)
 
@@ -213,7 +215,7 @@ legend("topright", legend = c("HR Solver","Weibull","PGW","KM"), lty = c(1,2,3,1
 
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #==================================================================================================
 # Bayesian Analysis
 #==================================================================================================
@@ -274,7 +276,7 @@ curve(p_nuW,1.1,1.5, n = 1000, xlab = ~kappa, ylab = "Prior Density",
       cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #==================================================================================================
 # Bayesian Analysis
 #==================================================================================================
@@ -344,7 +346,7 @@ plot(density(gammapPGW), main = "", xlab = expression(gamma), ylab = "Density",
 curve(p_gammaPGW,0,15, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #==================================================================================================
 # Bayesian Analysis
 #==================================================================================================
@@ -386,19 +388,19 @@ lp <- function(par) -log_postHR(par)
 inits <- OPTHR$par
 
 
-## ----include=FALSE----------------------------------------------------------------------------------------
+## ----include=FALSE------------------------------------------------------------------------------------------------------------------
 set.seed(1234)
 infoHR <- adaptMetropGibbs(ltd=lp, starting=inits, accept.rate=0.44, batch=n.batch, 
                            batch.length=batch.length, report=100, verbose=FALSE)
 
 
-## ----eval=FALSE-------------------------------------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------------------------------------------------------------
 ## set.seed(1234)
 ## infoHR <- adaptMetropGibbs(ltd=lp, starting=inits, accept.rate=0.44, batch=n.batch,
 ##                            batch.length=batch.length, report=100, verbose=FALSE)
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 chainHR <- infoHR$p.theta.samples[,1:4]
 
 # Burning and thinning the chain
@@ -444,7 +446,7 @@ curve(p_betaHR,0,15, n = 1000, xlab = ~beta, ylab = "Prior Density",
 
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------
 # Predictive Hazard functions
 #---------------------------------------------------------------------------------------
@@ -573,7 +575,7 @@ legend("bottomright", legend = c("Weibull", "PGW", "HR"), lty = c(1,2,3),
 
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 # Hazard vs. Response
 plot(tvec,  hpredHR, type = "l", xlab = "Time", ylab = "Predictive Hazard", 
        cex.axis = 1.5, cex.lab = 1.5, lwd =2, lty = 1, ylim = c(0,0.1))
@@ -587,7 +589,7 @@ legend("bottomright", legend = c("Hazard","Response"), lty = c(1,2),
        lwd = c(2,2), col = c("black","black"))
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------- 
 # Predictive Survival functions 
 #--------------------------------------------------------------------------------------- 
@@ -701,12 +703,12 @@ legend("topright", legend = c("Weibull", "PGW", "HR"), lty = c(1,2,3),
 
 
 
-## ----message=FALSE----------------------------------------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------------------------------------------------------------
 # fitting the estimator
-fit <- bshazard(Surv(df$time, df$status) ~ 1, data = df)
+fit <- bshazard(Surv(df$time, df$status) ~ 1, data = df, nbin = 100, degree = 3, verbose = FALSE)
 
 
-## ---------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------
 # Hazard vs. Response
 plot(tvec,  hpredHR, type = "l", xlab = "Time", ylab = "Hazard", 
        cex.axis = 1.5, cex.lab = 1.5, lwd =2, lty = 1, ylim = c(0,0.125))
@@ -719,5 +721,96 @@ lines(fit$time, fit$upper.ci, lty = 2, lwd = 1, col = "gray")
 # Hazard vs. Response
 points(tvec,  hpredHR, type = "l", xlab = "Time", ylab = "Hazard", 
      cex.axis = 1.5, cex.lab = 1.5, lwd =2, lty = 1, ylim = c(0,0.15))
+
+
+
+## -----------------------------------------------------------------------------------------------------------------------------------
+
+# Log-posterior (unknown initial conditions)
+lpX <- function(par) -log_postHRX(par)
+
+initsX <- c(OPTHR$par,h0,q0)
+
+
+## ----include=FALSE----------------------------------------------------------------------------------------
+set.seed(1234)
+infoHRX <- adaptMetropGibbs(ltd=lpX, starting=initsX, accept.rate=0.44, batch=n.batch, 
+                           batch.length=batch.length, report=100, verbose=FALSE)
+
+
+chainHRX <- infoHRX$p.theta.samples[,1:6]
+
+
+# Summaries
+summHRX <- apply(exp(chainHRX[ind,1:6]),2,summary)
+colnames(summHRX) <- c("lambda","kappa","alpha","beta","h0","q0")
+kable(summHRX, digits = 3)
+
+# KDEs
+lambdapHRX <- exp(chainHRX[,1][ind])
+kappapHRX <- exp(chainHRX[,2][ind])
+alphapHRX <- exp(chainHRX[,3][ind])
+betapHRX <- exp(chainHRX[,4][ind])
+h0pHRX <- exp(chainHRX[,5][ind])
+q0pHRX <- exp(chainHRX[,6][ind])
+
+
+plot(density(lambdapHRX), main = "", xlab = expression(lambda), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+curve(p_lambdaHR,0,3, n = 1000, xlab = ~lambda, ylab = "Prior Density", 
+      cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+
+
+plot(density(kappapHRX), main = "", xlab = expression(kappa), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+curve(p_kappaHR,0.05,0.3, n = 1000, xlab = ~kappa, ylab = "Prior Density", 
+      cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+
+plot(density(alphapHRX), main = "", xlab = expression(alpha), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+curve(p_alphaHR,0,10, n = 1000, xlab = ~alpha, ylab = "Prior Density", 
+      cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+
+plot(density(betapHRX), main = "", xlab = expression(beta), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+curve(p_betaHR,0,15, n = 1000, xlab = ~beta, ylab = "Prior Density", 
+      cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+
+p_h0HR <- Vectorize(function(t) dgamma(t, shape = 2, scale = 5e-3))
+plot(density(h0pHRX), main = "", xlab = expression(h[0]), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+curve(p_h0HR,0,0.05, n = 1000, xlab = ~beta, ylab = "Prior Density", 
+      cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+
+p_q0HR <- Vectorize(function(t) dgamma(t, shape = 2, scale = 5e-7))
+plot(density(q0pHRX), main = "", xlab = expression(h[0]), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+curve(p_q0HR,0,7e-6, n = 1000, xlab = ~beta, ylab = "Prior Density", 
+      cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+
+
+# Comparison with the posteriors obtained by fixing the initial conditions
+
+plot(density(lambdapHR), main = "", xlab = expression(lambda), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+points(density(lambdapHRX), lwd = 2, type = "l", lty = 2)
+legend("topright", legend = c("fixed","prior"), lty = c(1,2), lwd = c(2,2))
+
+
+plot(density(kappapHR), main = "", xlab = expression(kappa), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, ylim = c(0,30))
+points(density(kappapHRX), lwd = 2, type = "l", lty = 2)
+legend("topright", legend = c("fixed","prior"), lty = c(1,2), lwd = c(2,2))
+
+
+plot(density(alphapHR), main = "", xlab = expression(alpha), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+points(density(alphapHRX), lwd = 2, type = "l", lty = 2)
+legend("topright", legend = c("fixed","prior"), lty = c(1,2), lwd = c(2,2))
+
+plot(density(betapHR), main = "", xlab = expression(beta), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+points(density(betapHRX), lwd = 2, type = "l", lty = 2)
+legend("topright", legend = c("fixed","prior"), lty = c(1,2), lwd = c(2,2))
 
 
