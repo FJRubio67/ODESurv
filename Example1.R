@@ -18,12 +18,7 @@ library(spBayesSurv)
 
 
 ## ----include=FALSE------------------------------------------------------------------------------------------------------------------
-source("/Users/FJRubio/Dropbox/ODESurv/ODESurv/Codes/routines/routines.R")
-#source("/Users/javierrubio/Dropbox/ODESurv/ODESurv/Codes/routines/routines.R")
-
-
-## ----eval=FALSE---------------------------------------------------------------------------------------------------------------------
-## source("routines.R")
+source("routines.R")
 
 
 ## -----------------------------------------------------------------------------------------------------------------------------------
@@ -137,8 +132,8 @@ curve(fithw, 0, max(survtimes), lwd= 2, lty = 1, col = "black", ylim = c(0,3.5),
       xlab = "Time", ylab = "Hazard", main = "", cex.axis = 1.5, cex.lab = 1.5)
 curve(fithazL, 0, max(survtimes), lwd= 2, lty = 2, add = TRUE, n = 1000)
 
-legend("topright", legend = c("Weibull", "Logistic", "Harmonic Oscillator"), lty = c(1,2,3), 
-       lwd = c(2,2,3), col = c("black","black","black"))
+legend("topright", legend = c("Weibull", "Logistic"), lty = c(1,2), 
+       lwd = c(2,2), col = c("black","black"))
 
 # Comparison: cumulative hazard functions
 curve(fitchw, 0, max(survtimes), lwd= 2, lty = 1, col = "black", ylim = c(0,3.5), n = 1000,
