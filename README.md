@@ -5,7 +5,7 @@ This repository contains information about the project `ODESurv`, which concerns
 > Christen, J. A., and Rubio, F. J. (2023). Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations. Preprint. http://arxiv.org/abs/2308.05205
 
 
-The following posts contain R code and real-data examples associated with the examples presented in the paper:
+The following posts contain R code and real-data examples associated with the examples presented in the paper. The corresponding R codes are also available in this repository.
 
 1. [ODESurv: Logistic ODE hazard function](https://rpubs.com/FJRubio/logisODE)
 2. [ODESurv: Hazard-Response model](https://rpubs.com/FJRubio/HazardResponse)
