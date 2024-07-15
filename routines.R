@@ -442,6 +442,53 @@ log_postHRL <- function(par){
     return(as.numeric(log_post0))
 }
 
+
+
+#--------------------------------------------------------------------------------------------------
+# Hazard-Response ODE -log-posterior function: Solver. Unknown initial conditions
+#--------------------------------------------------------------------------------------------------
+
+log_postHRX <- function(par){
+  # Numerical solution for the ODE
+  params  <- c(lambda = exp(par[1]), kappa = exp(par[2]), alpha = exp(par[3]),
+               beta = exp(par[4]), h0 = exp(par[5]), q0 = exp(par[6]))
+  init      <- c(h = h0, q = q0, H = 0 )
+  times  <- c(0,survtimes) 
+  out <- ode(init, times, hazmodHR, params, method = "lsode", 
+             jacfunc = jacODE, jactype = "fullusr")[-1,]
+  
+  if(any(out[,2]<=0)){ return(1e6) }
+  
+  else{
+    # Terms in the log log likelihood function
+    ll_haz <- sum(log(as.vector(out[status,2])))
+    
+    ll_chaz <- sum(as.vector(out[,4]))
+    
+    log_lik <- -ll_haz + ll_chaz
+    
+    # Log prior
+    
+    log_prior <- -dgamma(exp(par[1]), shape = 2, scale = 2, log = TRUE) -
+      dgamma(exp(par[2]), shape = 2, scale = 2, log = TRUE) -
+      dgamma(exp(par[3]), shape = 2, scale = 2, log = TRUE) -
+      dgamma(exp(par[4]), shape = 2, scale = 2, log = TRUE) -
+      dgamma(exp(par[5]), shape = 2, scale = 5e-3, log = TRUE) -
+      dgamma(exp(par[6]), shape = 2, scale = 5e-7, log = TRUE) 
+      
+    
+    # Log Jacobian
+    
+    log_jacobian <- - par[1] - par[2] - par[3] - par[4] - par[5] - par[6]
+    
+    # log posterior
+    
+    log_post0 <- log_lik + log_prior + log_jacobian
+    
+    return(as.numeric(log_post0))
+  }
+}
+
 #--------------------------------------------------------------------------------------------------
 # Random number generation (Hazard-Response ODE)
 # Use gamma = kappa and delta = alpha to obtain the model in the manuscript

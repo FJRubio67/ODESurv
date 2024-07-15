@@ -53,8 +53,7 @@ library(bshazard)
 ```
 
 ```{r include=FALSE}
-source("/Users/FJRubio/Dropbox/ODESurv/ODESurv/Codes/routines/routines.R")
-#source("C:/Users/Javier/Dropbox/ODESurv/Codes/routines/routines.R")
+source("routines.R")
 ```
 
 ```{r eval=FALSE}
@@ -823,62 +822,111 @@ h0pHRX <- exp(chainHRX[,5][ind])
 q0pHRX <- exp(chainHRX[,6][ind])
 
 
-plot(density(lambdapHRX), main = "", xlab = expression(lambda), ylab = "Density",
-     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+# Comparison
+
+
+plot(density(lambdapHR), main = "", xlab = expression(lambda), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, col = "gray")
+points(density(lambdapHRX), main = "", xlab = expression(lambda), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, type = "l")
 curve(p_lambdaHR,0,3, n = 1000, xlab = ~lambda, ylab = "Prior Density", 
       cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+legend("topright", legend = c("Fixed", "Estimated","Prior"), col = c("gray","black","black"),
+       lty = c(1,1,2), lwd = c(2,2,2))
 
 
-plot(density(kappapHRX), main = "", xlab = expression(kappa), ylab = "Density",
-     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+
+plot(density(kappapHR), main = "", xlab = expression(kappa), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, col = "gray")
+points(density(kappapHRX), main = "", xlab = expression(kappa), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, type = "l")
 curve(p_kappaHR,0.05,0.3, n = 1000, xlab = ~kappa, ylab = "Prior Density", 
       cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+legend("topright", legend = c("Fixed", "Estimated","Prior"), col = c("gray","black","black"),
+       lty = c(1,1,2), lwd = c(2,2,2))
 
-plot(density(alphapHRX), main = "", xlab = expression(alpha), ylab = "Density",
-     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+
+
+plot(density(alphapHR), main = "", xlab = expression(alpha), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, col = "gray")
+points(density(alphapHRX), main = "", xlab = expression(alpha), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, type = "l")
 curve(p_alphaHR,0,10, n = 1000, xlab = ~alpha, ylab = "Prior Density", 
       cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+legend("topright", legend = c("Fixed", "Estimated","Prior"), col = c("gray","black","black"),
+       lty = c(1,1,2), lwd = c(2,2,2))
 
-plot(density(betapHRX), main = "", xlab = expression(beta), ylab = "Density",
-     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
+
+
+plot(density(betapHR), main = "", xlab = expression(beta), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, col = "gray")
+points(density(betapHRX), main = "", xlab = expression(beta), ylab = "Density",
+     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, type = "l")
 curve(p_betaHR,0,15, n = 1000, xlab = ~beta, ylab = "Prior Density", 
       cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+legend("topright", legend = c("Fixed", "Estimated","Prior"), col = c("gray","black","black"),
+       lty = c(1,1,2), lwd = c(2,2,2))
+
+
 
 p_h0HR <- Vectorize(function(t) dgamma(t, shape = 2, scale = 5e-3))
 plot(density(h0pHRX), main = "", xlab = expression(h[0]), ylab = "Density",
      cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
 curve(p_h0HR,0,0.05, n = 1000, xlab = ~beta, ylab = "Prior Density", 
       cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+legend("topright", legend = c("Estimated", "Prior"), col = c("black","black"),
+       lty = c(1,2), lwd = c(2,2))
+
+
 
 p_q0HR <- Vectorize(function(t) dgamma(t, shape = 2, scale = 5e-7))
 plot(density(q0pHRX), main = "", xlab = expression(q[0]), ylab = "Density",
      cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
 curve(p_q0HR,0,7e-6, n = 1000, xlab = ~beta, ylab = "Prior Density", 
       cex.axis = 1.5, cex.lab = 1.5, lwd = 2, lty = 2, add = TRUE)
+legend("topright", legend = c("Estimated", "Prior"), col = c("black","black"),
+       lty = c(1,2), lwd = c(2,2))
 
 
-# Comparison with the posteriors obtained by fixing the initial conditions
-
-plot(density(lambdapHR), main = "", xlab = expression(lambda), ylab = "Density",
-     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
-points(density(lambdapHRX), lwd = 2, type = "l", lty = 2)
-legend("topright", legend = c("fixed","prior"), lty = c(1,2), lwd = c(2,2))
 
 
-plot(density(kappapHR), main = "", xlab = expression(kappa), ylab = "Density",
-     cex.axis = 1.5, cex.lab = 1.5, lwd = 2, ylim = c(0,30))
-points(density(kappapHRX), lwd = 2, type = "l", lty = 2)
-legend("topright", legend = c("fixed","prior"), lty = c(1,2), lwd = c(2,2))
+
+######################################################################################################
+# Kernel density estimator (PDF)
+######################################################################################################
+# x:    vector of quantiles
+# h:    smoothing parameter (bandwidth)
+# data: data set
+
+# Function
+kde.dnorm <- function(x,h,data) mean( dnorm( x-data, 0, h ) )
 
 
-plot(density(alphapHR), main = "", xlab = expression(alpha), ylab = "Density",
-     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
-points(density(alphapHRX), lwd = 2, type = "l", lty = 2)
-legend("topright", legend = c("fixed","prior"), lty = c(1,2), lwd = c(2,2))
+##############################################################################
+# h0 distance
+##############################################################################
 
-plot(density(betapHR), main = "", xlab = expression(beta), ylab = "Density",
-     cex.axis = 1.5, cex.lab = 1.5, lwd = 2)
-points(density(betapHRX), lwd = 2, type = "l", lty = 2)
-legend("topright", legend = c("fixed","prior"), lty = c(1,2), lwd = c(2,2))
+hh0 <- bw.nrd0(log(h0pHRX))
+# Transformed KDE
+kde.dh0 <- Vectorize(function(x) kde.dnorm(log(x),hh0,log(h0pHRX))/x)
+
+diffh0 <- Vectorize(function(t) abs(kde.dh0(t) - p_h0HR(t)))
+
+integrate(diffh0,0,0.1)
+
+
+##############################################################################
+# q0 distance
+##############################################################################
+
+hq0 <- bw.nrd0(log(q0pHRX))
+# Transformed KDE
+kde.dq0 <- Vectorize(function(x) kde.dnorm(log(x),hq0,log(q0pHRX))/x)
+
+diffq0 <- Vectorize(function(t) abs(kde.dq0(t) - p_q0HR(t)))
+
+integrate(diffq0,0,1e-5)
+
+
 
 ```
