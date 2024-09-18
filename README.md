@@ -14,6 +14,7 @@ The following posts contain R code and real-data examples associated with the ex
 3. [Example 1. Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations. LeukSurv data](https://rpubs.com/FJRubio/ODESurvLeukSurv)
 4. [Example 2. Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations. rotterdam data](https://rpubs.com/FJRubio/ODESurvRotterdam)
 
-See also the [ODESurv](https://github.com/andreschristen/ODESurv) repository for Python code.
+See also the [ODESurv](https://github.com/andreschristen/ODESurv) repository for Python code and [MaryListerMcCammon-Project
+](https://github.com/MinghanYang1224/MaryListerMcCammon-Project) for Julia code.
 
 See also [HazReg](https://github.com/FJRubio67/HazReg) for information about the `HazReg` R package.
