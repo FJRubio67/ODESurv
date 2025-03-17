@@ -2,7 +2,7 @@
 
 This repository contains information about the project `ODESurv`, which concerns the use of ordinary differential equations in survival analysis. In particular, this repository contains real data applications and R code for the survival models in:
 
-> Christen, J. A., and Rubio, F. J. (2024+). Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations. *Statistical Methods in Medical Research*, in press. https://doi.org/10.1177/09622802241268504
+> Christen, J. A., and Rubio, F. J. (2024). Dynamic Survival Analysis: Modelling the Hazard Function via Ordinary Differential Equations. *Statistical Methods in Medical Research*, 33: 1768-1784. https://doi.org/10.1177/09622802241268504
 >
 > Preprint. http://arxiv.org/abs/2308.05205
 
